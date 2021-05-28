@@ -1,0 +1,18 @@
+{
+  "name": "hacka-node-api",
+  "version": "1.0.0",
+  "description": "Hacka Node API",
+  "main": "server.js",
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Rafael Ribeiro",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
