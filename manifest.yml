@@ -1,4 +1,4 @@
 applications:
-- name: HackaNodeAPI
+- name: ViaHackaNodeAPI
   random-route: true
   memory: 128M
