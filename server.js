@@ -20,13 +20,6 @@ app.use((req, res, next) => {
   next()
 })
 
-app.use((req, res, next) => {
-  const err = `${req.method} ${req.url} Not Found`;
-  err.status = 404
-  res.status(err.status);
-  next(err);
-});
-
 app.use((err, req, res, next) => {
   console.error(err);
   res.status(err.status || 500);
