@@ -1,13 +1,14 @@
 {
-  "name": "hacka-node-api",
+  "name": "viahacka-node-api",
   "version": "1.0.0",
   "description": "Hacka Node API",
   "main": "server.js",
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "https://github.com/rribeiro93k/viahacka-node-api"
   },
   "scripts": {
+    "start": "node server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Rafael Ribeiro",
