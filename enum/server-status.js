@@ -1,0 +1,8 @@
+const SERVER_STATUS = {
+  SUCCESS: 200,
+  NO_CONTENT: 204,
+  NOT_FOUND: 404,
+  INTERNAL_ERROR: 500
+};
+
+module.exports = SERVER_STATUS;
