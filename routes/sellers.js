@@ -17,16 +17,14 @@ router.get('/', (req, res) => {
     }
     console.log('conexão aberta...')
 
-    const query = 'SELECT * FROM COMPRA';
+    const query = 'SELECT * FAKE_TABLE_TEST';
     connection.query(query, (connErr, data) => {
       if (connErr) {
         res.status(SERVER_STATUS.INTERNAL_ERROR).send({ error: connErr });
         return;
       }
 
-      res
-        .status(SERVER_STATUS.SUCCESS)
-        .send(data);
+      res.status(SERVER_STATUS.SUCCESS).send(data);
 
       connection.close((connCloseErr) => {
         if (connCloseErr) res.status(SERVER_STATUS.INTERNAL_ERROR).send({ error: connCloseErr });
