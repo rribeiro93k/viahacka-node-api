@@ -6,29 +6,31 @@ const SERVER_STATUS = require('../enum/server-status');
 const ibmdb = require("ibm_db");
 const connStr = "DATABASE=BLUDB;HOSTNAME=dashdb-txn-sbox-yp-dal09-14.services.dal.bluemix.net;PORT=50000;PROTOCOL=TCPIP;UID=xrz69130;PWD=44k8g5m12^1sg0sc;";
 
+const request = require('request');
+
 router.get('/:user', (req, res) => {
 
   const user = req.params.user || null;
   if (!user) {
-    res.status(SERVER_STATUS.UNPROCESSABLE_ENTITY).send({ error: 'Please, provide the user name' });
+    res.status(SERVER_STATUS.UNPROCESSABLE_ENTITY).json({ error: 'Please, provide the user name' });
     return;
   }
 
   ibmdb.open(connStr, (err, connection) => {
     if (err) {
-      res.status(SERVER_STATUS.INTERNAL_ERROR).send({ error: 'IbmDb open connection failed' });
+      res.status(SERVER_STATUS.INTERNAL_ERROR).json({ error: 'IbmDb open connection failed' });
       return;
     }
 
     const query = `SELECT L.ID AS "id", L.NOME AS "nome", L.USER AS "user", L.CATEGORIA_RANKING AS "categoria_ranking", L.PROGRESS AS "progress" FROM XRZ69130.APPLOJISTA L WHERE "USER" LIKE '${user}'`;
     connection.query(query, (connErr, data) => {
       if (connErr) {
-        res.status(SERVER_STATUS.INTERNAL_ERROR).send({ error: connErr });
+        res.status(SERVER_STATUS.INTERNAL_ERROR).json({ error: connErr });
       } else {
-        res.status(SERVER_STATUS.SUCCESS).send(data[0]);
+        res.status(SERVER_STATUS.SUCCESS).json(data[0]);
       }
       connection.close((connCloseErr) => {
-        if (connCloseErr) res.status(SERVER_STATUS.INTERNAL_ERROR).send({ error: connCloseErr });
+        if (connCloseErr) res.status(SERVER_STATUS.INTERNAL_ERROR).json({ error: connCloseErr });
       });
     });
   });
@@ -39,13 +41,13 @@ router.get('/:userId/conquistas', (req, res) => {
 
   const userId = req.params.userId || null;
   if (!userId) {
-    res.status(SERVER_STATUS.UNPROCESSABLE_ENTITY).send({ error: 'Please, provide the userId' });
+    res.status(SERVER_STATUS.UNPROCESSABLE_ENTITY).json({ error: 'Please, provide the userId' });
     return;
   }
 
   ibmdb.open(connStr, (err, connection) => {
     if (err) {
-      res.status(SERVER_STATUS.INTERNAL_ERROR).send({ error: 'IbmDb open connection failed' });
+      res.status(SERVER_STATUS.INTERNAL_ERROR).json({ error: 'IbmDb open connection failed' });
       return;
     }
 
@@ -56,12 +58,12 @@ router.get('/:userId/conquistas', (req, res) => {
 
     connection.query(query, (connErr, data) => {
       if (connErr) {
-        res.status(SERVER_STATUS.INTERNAL_ERROR).send({ error: connErr });
+        res.status(SERVER_STATUS.INTERNAL_ERROR).json({ error: connErr });
       } else {
-        res.status(SERVER_STATUS.SUCCESS).send(data);
+        res.status(SERVER_STATUS.SUCCESS).json(data);
       }
       connection.close((connCloseErr) => {
-        if (connCloseErr) res.status(SERVER_STATUS.INTERNAL_ERROR).send({ error: connCloseErr });
+        if (connCloseErr) res.status(SERVER_STATUS.INTERNAL_ERROR).json({ error: connCloseErr });
       });
     });
   });
@@ -72,13 +74,13 @@ router.get('/:userId/desafios', (req, res) => {
 
   const userId = req.params.userId || null;
   if (!userId) {
-    res.status(SERVER_STATUS.UNPROCESSABLE_ENTITY).send({ error: 'Please, provide the userId' });
+    res.status(SERVER_STATUS.UNPROCESSABLE_ENTITY).json({ error: 'Please, provide the userId' });
     return;
   }
 
   ibmdb.open(connStr, (err, connection) => {
     if (err) {
-      res.status(SERVER_STATUS.INTERNAL_ERROR).send({ error: 'IbmDb open connection failed' });
+      res.status(SERVER_STATUS.INTERNAL_ERROR).json({ error: 'IbmDb open connection failed' });
       return;
     }
 
@@ -90,16 +92,34 @@ router.get('/:userId/desafios', (req, res) => {
       WHERE D.LOJISTA_ID = ${userId};`;
     connection.query(query, (connErr, data) => {
       if (connErr) {
-        res.status(SERVER_STATUS.INTERNAL_ERROR).send({ error: connErr });
+        res.status(SERVER_STATUS.INTERNAL_ERROR).json({ error: connErr });
       } else {
-        res.status(SERVER_STATUS.SUCCESS).send(data);
+        res.status(SERVER_STATUS.SUCCESS).json(data);
       }
       connection.close((connCloseErr) => {
-        if (connCloseErr) res.status(SERVER_STATUS.INTERNAL_ERROR).send({ error: connCloseErr });
+        if (connCloseErr) res.status(SERVER_STATUS.INTERNAL_ERROR).json({ error: connCloseErr });
       });
     });
   });
 
+});
+
+router.get('/:userId/score', (req, res) => {
+
+  const userId = req.params.userId || null;
+  if (!userId) {
+    res.status(SERVER_STATUS.UNPROCESSABLE_ENTITY).json({ error: 'Please, provide the userId' });
+    return;
+  }
+
+  request.get('https://viahacka-node-api-quick-mongoose.mybluemix.net/sellers/caldeirao', (error, response, body)  => {
+    if (error) {
+      res.status(SERVER_STATUS.UNPROCESSABLE_ENTITY).json({ error: error });
+      return;
+    }
+
+    res.status(SERVER_STATUS.SUCCESS).json(JSON.parse(body));
+  })
 });
 
 module.exports = router;
