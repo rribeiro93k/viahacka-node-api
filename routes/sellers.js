@@ -85,7 +85,7 @@ router.get('/:userId/desafios', (req, res) => {
     }
 
     const query = `SELECT
-      D.ID AS "id", D.CATEGORIA AS "categoria", D.DESCRICAO AS "descricao", D.PROGRESSO AS "progresso", R.TIPO AS "recompensa_tipo", R.DESCRICAO AS "recompensa_descricao", R.VALOR_COINS AS "recompensa_coins"
+      D.ID AS "id", D.CATEGORIA AS "categoria", D.DESCRICAO AS "descricao", D.PROGRESSO AS "progresso", D.TOTAL AS "total", R.TIPO AS "recompensa_tipo", R.DESCRICAO AS "recompensa_descricao", R.VALOR_COINS AS "recompensa_coins"
       FROM XRZ69130.APPDESAFIOS D
       JOIN XRZ69130.APPRECOMPENSAS R
       ON D.RECOMPENSA_ID = R.ID
